@@ -1,0 +1,127 @@
+#root {
+  /*APP SETTINGS*/
+  // 1. Colors
+  // 1.1 Primary
+  --bright-blue: hsl(220, 98%, 61%);
+  --check-background: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%);
+  // 1.2 Neutral
+  // 1.2.1 Light Theme
+  --very-light-gray: hsl(0, 0%, 98%);
+  --very-light-grayish-blue: hsl(236, 33%, 92%);
+  --light-grayish-blue: hsl(233, 11%, 84%);
+  --dark-grayish-blue: hsl(236, 9%, 61%);
+  --very-dark-grayish-blue: hsl(235, 19%, 35%);
+  // 1.2.2 Dark Theme
+  //--very-dark-blue: hsl(235, 21%, 11%);
+  //--very-dark-desaturated-blue: hsl(235, 24%, 19%);
+  //--light-grayish-blue: hsl(234, 39%, 85%);
+  //--light-grayish-blue: hsl(236, 33%, 92%); // (hover)
+  //--dark-grayish-blue: hsl(234, 11%, 52%);
+  //--very-dark-grayish-blue: hsl(233, 14%, 35%);
+  //--very-dark-grayish-blue: hsl(237, 14%, 26%)
+
+  // Dimensions
+  --banner-height: 300px;
+  --header-height: 158px;
+  --app-width: 1440px;
+  --card-container-height: 440px;
+  --card-width: 542px;
+  --card-height: 65px;
+  --card-left-pad: 74px;
+  --filter-height: 52px;
+
+  --card-border-radius: 6px;
+}
+
+.App {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 0);
+  width: var(--app-width);
+  min-height: calc(100vh - var(--banner-height));
+  //padding-bottom: 30px;
+  //padding-top: var(--filter-top-margin);
+  //background-color: var(--app-background-color);
+  &Banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    width: 100%;
+    height: var(--banner-height);
+    background-image: url("/public/images/bg-desktop-light.jpg");
+    //background-color: var(--desaturated-dark-cyan);
+    background-repeat: no-repeat;
+  }
+  @media only screen and (max-width: 767px) {
+    &Banner {
+      background-image: url("/public/images/bg-mobile-light.jpg");
+    }
+  }
+
+}
+
+.TodoList {
+  width: var(--card-width);
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: var(--card-gap);
+  margin: 0 auto;
+  &-Header {
+    height: var(--header-height);
+    width: 100%;
+    background-color: rgba(0, 119, 255, 0.3);
+  }
+  &-Container {
+    height: var(--card-container-height);
+    border-radius: var(--card-border-radius);
+    box-shadow: 2px 10px 20px rgba(91, 164, 164, 0.15);
+    overflow: hidden;
+    //display: flex;
+    flex-direction: column;
+    //flex-shrink: ;
+    justify-content: flex-start;
+    gap: 1px;
+    background-color: pink;
+    overflow-y: auto;
+  }
+}
+
+.TodoCard {
+  width: 100%;
+  position: relative;
+  height: var(--card-height);
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  border-bottom: 1px solid gray;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  //overflow: hidden;
+  &-Check {
+    width: 25px;
+    height: 25px;
+    margin: auto 25px;
+    border-radius: 100%;
+    border: 1px solid var(--dark-grayish-blue);
+  }
+  &-Text {
+  }
+  &-Delete {
+    width: 20px;
+    height: 20px;
+    //margin: auto 25px;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+    visibility: hidden;
+  }
+  &:hover &-Delete {
+    visibility: visible;
+  }
+}
