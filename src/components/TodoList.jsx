@@ -1,58 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import Card from "./Card.jsx";
 import Header from "./Header.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteTodo, todosSelector, updateTodo} from "../data/todosSlice.js";
 
-const todos_init = [
-  {
-    id: 1,
-    completed: false,
-    text: 'Task #1'
-  },
-  {
-    id: 2,
-    completed: true,
-    text: 'Task #2'
-  },
-  {
-    id: 3,
-    completed: true,
-    text: 'Task #3'
-  },
-  {
-    id: 4,
-    completed: true,
-    text: 'Task #4'
-  },
-  {
-    id: 5,
-    completed: true,
-    text: 'Task #5'
-  },
-  {
-    id: 6,
-    completed: true,
-    text: 'Task #6'
-  },
-  {
-    id: 7,
-    completed: true,
-    text: 'Task #7'
-  },
-  {
-    id: 8,
-    completed: true,
-    text: 'Task #8'
-  },
-]
 
 const TodoList = () => {
+  const todos1 = useSelector(todosSelector);
+  const dispatch = useDispatch();
   const [todos, setTodos] = useState([]);
   const [dragId, setDragId] = useState();
 
   useEffect(() => {
-    setTodos(todos_init.map((t, i) => ({...t, order: i})));
-  }, [todos_init]);
+    setTodos(todos1.map((t, i) => ({...t, order: i})));
+  }, [todos1]);
 
+
+  const handleTodoChange = (todo, action) => {
+    switch (action) {
+      case 'update':
+        dispatch(updateTodo(todo));
+        break;
+      case 'delete':
+        dispatch(deleteTodo(todo));
+        break;
+    }
+  }
 
   const handleDrag = (event) => {
     setDragId(parseInt(event.currentTarget.id));
@@ -82,13 +55,18 @@ const TodoList = () => {
   return (
     <div className='TodoList'>
       <Header />
-      Todo List
+      <div className='TodoList-Container TodoList-Container-New'>
+
+      </div>
       <div className='TodoList-Container'>
         {
           todos
             .sort((a, b) => a.order - b.order)
             .map(t => (
-            <Card key={t.id} todo={t} handleDrop={handleDrop} handleDrag={handleDrag} />
+            <Card key={t.id} todo={t}
+                  handleUpdate={handleTodoChange}
+                  handleDrop={handleDrop}
+                  handleDrag={handleDrag} />
           ))
         }
       </div>

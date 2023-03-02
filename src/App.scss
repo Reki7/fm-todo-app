@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=League+Spartan:wght@500;700&display=swap');
+
 #root {
   /*APP SETTINGS*/
+  font-family: 'Josefin Sans', sans-serif;
   // 1. Colors
   // 1.1 Primary
   --bright-blue: hsl(220, 98%, 61%);
-  --check-background: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%);
+  --check-background: linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
   // 1.2 Neutral
   // 1.2.1 Light Theme
   --very-light-gray: hsl(0, 0%, 98%);
@@ -24,7 +27,8 @@
   --banner-height: 300px;
   --header-height: 158px;
   --app-width: 1440px;
-  --card-container-height: 440px;
+  --card-container-height: 390px;
+  --card-filter-height: 50px;
   --card-width: 542px;
   --card-height: 65px;
   --card-left-pad: 74px;
@@ -44,6 +48,7 @@
   //padding-bottom: 30px;
   //padding-top: var(--filter-top-margin);
   //background-color: var(--app-background-color);
+  color: var(--very-dark-grayish-blue);
   &Banner {
     position: absolute;
     top: 0;
@@ -73,7 +78,19 @@
   &-Header {
     height: var(--header-height);
     width: 100%;
-    background-color: rgba(0, 119, 255, 0.3);
+    & > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 75px;
+      color: var(--very-light-gray);
+    }
+    & h1 {
+      font-size: 2.5rem;
+      //letter-spacing: 14px;
+      letter-spacing: 1rem;
+    }
   }
   &-Container {
     height: var(--card-container-height);
@@ -87,6 +104,11 @@
     gap: 1px;
     background-color: pink;
     overflow-y: auto;
+    margin-top: 22px;
+    &-New {
+      height: var(--card-height);
+      margin-top: 0;
+    }
   }
 }
 
@@ -97,19 +119,42 @@
   margin: 0;
   padding: 0;
   background-color: white;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid var(--light-grayish-blue);
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  cursor: grab;
   //overflow: hidden;
   &-Check {
     width: 25px;
     height: 25px;
     margin: auto 25px;
     border-radius: 100%;
-    border: 1px solid var(--dark-grayish-blue);
+    border: 1px solid var(--light-grayish-blue);
+    cursor: pointer;
+    &:hover {
+      border: 1px solid var(--dark-grayish-blue);
+    }
+    &:checked + label {
+      background: top 7px left 6px / 50% no-repeat  url("/public/images/icon-check.svg"), var(--check-background);
+    }
+    &:checked ~ div {
+      color: var(--light-grayish-blue);
+      text-decoration: line-through;
+    }
+    //input #{$c} {
+    &-hide {
+      display: none;
+    }
   }
   &-Text {
+    cursor: pointer;
+  }
+  &-TextEditor {
+    width: 75%;
+    color: black;
+    border: 1px solid var(--very-light-gray);
+    outline-color: var(--light-grayish-blue);
   }
   &-Delete {
     width: 20px;
