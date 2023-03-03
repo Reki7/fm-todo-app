@@ -102,6 +102,7 @@ const TodoList = () => {
               filter={filter}
               setFilter={setFilter}
               clearCompleted={clearCompleted} />
+      <div className='Help'>Drag and drop to reorder list</div>
     </div>
   );
 };
