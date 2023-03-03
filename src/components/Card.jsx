@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
-const Card = ({todo, handleUpdate, handleDrag, handleDrop}) => {
-  const [editing, setEditing] = useState(false);
+const Card = ({todo, handleUpdate, handleDrag, handleDrop, isNew=false}) => {
+  const [editing, setEditing] = useState(isNew);
   const [text, setText] = useState(todo.text);
 
   const handleDelete = () => {
@@ -22,13 +22,15 @@ const Card = ({todo, handleUpdate, handleDrag, handleDrop}) => {
   }
 
   const handleTextEdit = (result = false) => {
-    setEditing(false);
     if (result) {
       const updatedTodo = {...todo, text: text}
-      handleUpdate(updatedTodo, 'update');
+      handleUpdate(updatedTodo, isNew ? 'create' : 'update');
+      if (isNew)
+        setText(todo.text);
     } else {
       setText(todo.text)
     }
+    setEditing(isNew);
   }
 
   // const handleDragOver = (event) => {
@@ -38,13 +40,14 @@ const Card = ({todo, handleUpdate, handleDrag, handleDrop}) => {
   return (
     <div className='TodoCard'
          id={todo.id}
-         draggable={true}
+         draggable={!editing}
          onDragStart={handleDrag}
          onDrop={handleDrop}
          onDragOver={e => e.preventDefault()} >
       <input id={'cb_' + todo.id}
              type='checkbox'
              checked={todo.completed}
+             disabled={isNew}
              className='TodoCard-Check TodoCard-Check-hide'
              onChange={() => handleCheck(todo.id)} />
       <label htmlFor={'cb_' + todo.id} className='TodoCard-Check' />
@@ -52,8 +55,9 @@ const Card = ({todo, handleUpdate, handleDrag, handleDrop}) => {
       ? (
           <input value={text}
                  type='text'
+                 placeholder='Create a new todo...'
                  onChange={(e) => setText(e.target.value)}
-                 onBlur={handleTextEdit}
+                 onBlur={() => handleTextEdit(false)}
                  onKeyDown={handleKey}
                  className='TodoCard-TextEditor'/>
         )
@@ -63,10 +67,12 @@ const Card = ({todo, handleUpdate, handleDrag, handleDrop}) => {
           </div>
         )
       }
-      <img className='TodoCard-Delete'
-           src='/images/icon-cross.svg'
-           onClick={handleDelete}
-           alt='' />
+      {!isNew &&
+        <img className='TodoCard-Delete'
+             src='/images/icon-cross.svg'
+             onClick={handleDelete}
+             alt='' />
+      }
     </div>
   );
 };

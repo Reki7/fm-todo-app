@@ -9,7 +9,9 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    createTodo(state, action) {},
+    createTodo(state, action) {
+      state.todos = [...state.todos, {...action.payload, id: new Date().getTime()}]
+    },
     updateTodo(state, action) {
       state.todos = state.todos.map(todo => {
         if (todo.id === action.payload.id)
@@ -21,10 +23,13 @@ export const todosSlice = createSlice({
     deleteTodo(state, action) {
       state.todos = state.todos.filter(todo => todo.id !== action.payload.id)
     },
+    deleteCompleted(state, action) {
+      state.todos = state.todos.filter(todo => !todo.completed);
+    },
   }
 })
 
-export const { createTodo, updateTodo, deleteTodo } = todosSlice.actions;
+export const { createTodo, updateTodo, deleteTodo, deleteCompleted } = todosSlice.actions;
 export const todosSelector = state => state.todos.todos;
 
 export default todosSlice.reducer;
