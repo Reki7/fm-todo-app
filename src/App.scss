@@ -226,6 +226,16 @@ body {
   &:last-of-type {
     border-bottom: none;
   }
+  &-Dragging {
+    background-color: var(--list-background-color);
+    border: 1px solid var(--borders-color);
+    //opacity: 0%;
+    cursor: move;
+  }
+  &-DragOver {
+    background-color: var(--list-background-color);
+    //margin-top: var(--card-height);
+  }
   &-Check {
     width: var(--checkbox-size);
     height: var(--checkbox-size);

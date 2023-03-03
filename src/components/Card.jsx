@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 
-const Card = ({todo, handleUpdate, handleDrag, handleDrop, isNew=false}) => {
+const Card = ({todo, updateHandler, dragStartHandler, dropHandler, isNew=false}) => {
   const [editing, setEditing] = useState(isNew);
   const [text, setText] = useState(todo.text);
+  const [isDraging, setIsDraging] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDelete = () => {
-    handleUpdate(todo, 'delete');
+    updateHandler(todo, 'delete');
   }
 
   const handleKey = (e) => {
@@ -18,13 +20,13 @@ const Card = ({todo, handleUpdate, handleDrag, handleDrop, isNew=false}) => {
 
   const handleCheck = () => {
     const updatedTodo = {...todo, completed: !todo.completed}
-    handleUpdate(updatedTodo, 'update');
+    updateHandler(updatedTodo, 'update');
   }
 
   const handleTextEdit = (result = false) => {
     if (result) {
       const updatedTodo = {...todo, text: text}
-      handleUpdate(updatedTodo, isNew ? 'create' : 'update');
+      updateHandler(updatedTodo, isNew ? 'create' : 'update');
       if (isNew)
         setText(todo.text);
     } else {
@@ -33,17 +35,50 @@ const Card = ({todo, handleUpdate, handleDrag, handleDrop, isNew=false}) => {
     setEditing(isNew);
   }
 
-  // const handleDragOver = (event) => {
-  //
-  // }
+  const handleDragStart = (e) => {
+    setIsDraging(true);
+    dragStartHandler(e);
+  }
+
+  const handleDragEnd = (e) => {
+    setIsDraging(false);
+  }
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+    dropHandler(e);
+  }
 
   return (
-    <div className='TodoCard'
+    <div className={`TodoCard ${isDragOver && 'TodoCard-DragOver'} ${isDraging && 'TodoCard-Dragging'}`}
          id={todo.id}
          draggable={!editing}
-         onDragStart={handleDrag}
-         onDrop={handleDrop}
-         onDragOver={e => e.preventDefault()} >
+         onDragStartCapture={handleDragStart}
+         onDragEndCapture={handleDragEnd}
+         onDragEnterCapture={handleDragEnter}
+         onDragLeaveCapture={handleDragLeave}
+         onDropCapture={handleDrop}
+         onDragOverCapture={handleDragOver}
+    >
       <input id={'cb_' + todo.id}
              type='checkbox'
              checked={todo.completed}

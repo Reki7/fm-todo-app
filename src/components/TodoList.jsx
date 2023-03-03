@@ -92,9 +92,9 @@ const TodoList = () => {
             .sort((a, b) => a.order - b.order)
             .map(t => (
             <Card key={t.id} todo={t}
-                  handleUpdate={handleTodoChange}
-                  handleDrop={handleDrop}
-                  handleDrag={handleDrag} />
+                  updateHandler={handleTodoChange}
+                  dropHandler={handleDrop}
+                  dragStartHandler={handleDrag} />
           ))
         }
       </div>
